@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
+using StackExchange.Redis;
 
 namespace Redis.Demo.Controllers
 {
@@ -23,11 +24,14 @@ namespace Redis.Demo.Controllers
         [HttpGet]
         public void Get()
         {
-            var buffer = Encoding.UTF8.GetBytes("Hello");
-            _distributedCache.Set("test", buffer, new DistributedCacheEntryOptions
-            {
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(10)
-            });
+            //var buffer = Encoding.UTF8.GetBytes("Hello");
+            //_distributedCache.Set("test", buffer, new DistributedCacheEntryOptions
+            //{
+            //    AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(10)
+            //});
+
+            var redis = ConnectionMultiplexer.Connect("localhost");
+            var db = redis.GetDatabase();
         }
     }
 }
